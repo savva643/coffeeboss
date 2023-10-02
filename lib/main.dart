@@ -25,26 +25,6 @@ class BottomNavigationBarExample extends StatefulWidget {
 class _BottomNavigationBarExampleState
     extends State<BottomNavigationBarExample> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -55,12 +35,6 @@ class _BottomNavigationBarExampleState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -87,7 +61,65 @@ class _BottomNavigationBarExampleState
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
+
       ),
+      body: <Widget>[
+        ListView(
+            children: <Widget>[
+            Container(
+              color: Color.fromRGBO(242, 232, 201, 1),
+              padding: EdgeInsets.only(top: 20),
+              child: Center(
+                child: const Text('Coffee Boss',
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontFamily: "Gilroy",
+                  fontSize: 32.0,
+                ),
+              ),
+              ),
+            ),
+            Container(
+                color: Color.fromRGBO(242, 232, 201, 1),
+                padding: EdgeInsets.only(top: 20),
+                child: Center(
+                  child: const Text('Добрый вечер, \nПетр',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontFamily: "Gilroy",
+                      fontSize: 32.0,
+                    ),
+                  ),
+                ),
+              ),
+          Container(
+            color: Color.fromRGBO(30, 30, 30, 1),
+            child: const Text('Coffee Boss',
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontFamily: "Gilroy",
+                fontSize: 32.0,
+              ),
+            ),
+          ),
+         ]
+        ),
+        Container(
+          color: Color.fromRGBO(242, 232, 201, 1),
+          alignment: Alignment.center,
+          child: const Text('Page 2'),
+        ),
+        Container(
+          color: Color.fromRGBO(242, 232, 201, 1),
+          alignment: Alignment.center,
+          child: const Text('Page 3'),
+        ),
+        Container(
+          color: Color.fromRGBO(242, 232, 201, 1),
+          alignment: Alignment.center,
+          child: const Text('Page 4'),
+        ),
+      ][_selectedIndex],
     );
   }
 }
