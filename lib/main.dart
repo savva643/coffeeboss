@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:dio/dio.dart';
+
 
 void main() async {
 
@@ -214,6 +216,19 @@ class Iphone1313Pro2 extends StatefulWidget  {
 
   State<Iphone1313Pro2> createState() => _FooState();
 }
+
+class Album {
+  final String token;
+
+  const Album({required this.token});
+
+  factory Album.fromJson(Map<String, dynamic> json) {
+    return Album(
+      token: json['token'],
+    );
+  }
+}
+
 class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> animation;
@@ -236,21 +251,92 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
   late Animation<Offset> animationt2i;
   late AnimationController animationControllert2i;
 
+  late Animation<Offset> animationtme;
+  late AnimationController animationControllertme;
+  late Animation<Offset> animationtm2e;
+  late AnimationController animationControllertm2e;
+  late Animation<Offset> animationne;
+  late AnimationController animationControllerne;
+  late Animation<Offset> animationb2e;
+  late AnimationController animationControllerb2e;
+  late Animation<Offset> animationt2e;
+  late AnimationController animationControllert2e;
+  late Animation<Offset> animationt2ie;
+  late AnimationController animationControllert2ie;
+
+
+
+  late Animation<Offset> animationt3i;
+  late AnimationController animationControllert3i;
+  late Animation<Offset> animationn3;
+  late AnimationController animationControllern3;
+  late Animation<Offset> animationb3;
+  late AnimationController animationControllerb3;
+
+
   late Animation<double> animationtmy;
   late AnimationController animationControllertmy;
   late String ntype = "Добрый вечер";
   late bool conform = false;
-  TextEditingController _phoneNumberController = TextEditingController();
+
+
+  late String num = "";
+  late String code = "";
+
   TextEditingController _otpController = TextEditingController();
 
-  
+  Future<String> numbersend(String title) async {
+
+    var response = await http.get(Uri.parse('https://coffee-boss.ru/logon.php?num='+title));
+    debugPrint('Response: ${response.body}');
+
+    
+    return "1";
+  }
+
+  Future<http.Response> namesend(String title) {
+    return http.post(
+      Uri.parse('https://coffee-boss.ru/logon.php'),
+      body: jsonEncode(<String, String>{
+        'name': title,
+        'token': title,
+      }),
+    );
+
+  }
+
+  Future<Album> codesend(String title) async {
+    final response = await http.post(
+      Uri.parse('https://coffee-boss.ru/logon.php?code='+title),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'code': title,
+      }),
+    );
+    print(response.body);
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      print(Album.fromJson(jsonDecode(response.body)));
+      return Album.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to create album.');
+    }
+  }
+
+
+
 
   @override
   void initState() {
+
     super.initState();
     final now = DateTime.now();
     print(now.hour);
-
     if (now.hour >= 0 && now.hour < 6){
       ntype = "Доброй ночи";
     }else if (now.hour >= 6 && now.hour < 12){
@@ -260,6 +346,9 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
     }else if (now.hour >= 18 && now.hour < 0){
       ntype = "Добрый вечер";
     }
+
+
+
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds:200));
     animation = Tween<Offset>(begin: Offset(0.18, 4.3), end: Offset(-1.18, 4.3))
@@ -269,7 +358,6 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     animationb = Tween<Offset>(begin: Offset(0.117, 8.4), end: Offset(-1.117, 8.4))
         .animate(animationControllerb);
-
 
     animationControllert =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
@@ -301,6 +389,9 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
     animationtm2 = Tween<Offset>(begin: Offset(3.36, 25.2), end: Offset(0.36, 25.2))
         .animate(animationControllertm2);
 
+
+
+
     animationControllertm =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     animationtm = Tween<Offset>(begin: Offset(24.6, 16.6), end: Offset(1.6, 16.6))
@@ -311,6 +402,57 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
         AnimationController(vsync: this, duration: Duration(milliseconds: 140));
     animationtmy = Tween<double>(begin: (0), end: (1))
         .animate(animationControllertmy);
+
+
+
+
+
+    animationControllert2ie =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 140));
+    animationt2ie = Tween<Offset>(begin: Offset(0, 0), end: Offset(-3.16, 0))
+        .animate(animationControllert2ie);
+
+    animationControllert2e =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 140));
+    animationt2e = Tween<Offset>(begin: Offset(0, 0), end: Offset(-3.44, 0))
+        .animate(animationControllert2e);
+
+    animationControllerb2e =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 140));
+    animationb2e  = Tween<Offset>(begin: Offset(0, 0), end: Offset(-3.117, 0))
+        .animate(animationControllerb2e);
+
+    animationControllertm2e =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 140));
+    animationtm2e = Tween<Offset>(begin: Offset(0, 0), end: Offset(-3.36, 0))
+        .animate(animationControllertm2e);
+
+    animationControllerne =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 140));
+    animationne = Tween<Offset>(begin: Offset(0, 0), end: Offset(-3.117, 0))
+        .animate(animationControllerne);
+
+    animationControllertme =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 140));
+    animationtme = Tween<Offset>(begin: Offset(0, 0), end: Offset(-24.6, 0))
+        .animate(animationControllertme);
+
+
+
+    animationControllert3i =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    animationt3i = Tween<Offset>(begin: Offset(3.3, 8), end: Offset(0.3, 8))
+        .animate(animationControllert3i);
+
+    animationControllern3 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    animationn3 = Tween<Offset>(begin: Offset(3.1, 7), end: Offset(0.1, 7))
+        .animate(animationControllern3);
+
+    animationControllerb3 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    animationb3 = Tween<Offset>(begin: Offset(3.1, 8.2), end: Offset(0.1, 8.2))
+        .animate(animationControllerb3);
   }
 
 
@@ -396,6 +538,9 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
           SlideTransition(
             position: animationt2,
             child:
+            SlideTransition(
+              position: animationt2e,
+              child:
               const Positioned(
                 left: 97,
                 top: 234,
@@ -411,6 +556,7 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+            ),
           ),
           SlideTransition(
             position: animationt,
@@ -431,25 +577,48 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                 ),
               ),
           ),
-          SlideTransition(
-            position: animationt2i,
-            child:
-              const Positioned(
-                left: 55,
-                top: 264,
-                child: Text(
-                  'Чтобы войти или зарегестрироватся',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'Gilroy',
-                      fontWeight: FontWeight.w900,
-                      height: 0,
-                      decoration: TextDecoration.none
+              SlideTransition(
+                position: animationt2i,
+                child:
+                SlideTransition(
+                  position: animationt2ie,
+                  child:
+                const Positioned(
+                  left: 55,
+                  top: 264,
+                  child: Text(
+                    'Чтобы войти или зарегестрироватся',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w900,
+                        height: 0,
+                        decoration: TextDecoration.none
+                    ),
+                  ),
+                ),
+                ),
+              ),
+              SlideTransition(
+                position: animationt3i,
+                child:
+                const Positioned(
+                  left: 97,
+                  top: 234,
+                  child: Text(
+                    'Введите код из СМС',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w900,
+                        height: 0,
+                        decoration: TextDecoration.none
+                    ),
                   ),
                 ),
               ),
-          ),
           SlideTransition(
             position: animationb,
             child:
@@ -688,6 +857,9 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
           SlideTransition(
             position: animationb2,
             child:
+            SlideTransition(
+              position: animationb2e,
+              child:
               Positioned(
                 left: 35,
                 top: 424,
@@ -710,6 +882,42 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                                 color: const Color(0xFF1E1E1E),
                                 height: 60.0,
                                 child: TextButton(onPressed: () {
+
+                                  if(num.length > 2 && conform == true) {
+                                    animationControllerb2e.forward();
+                                    animationControllert2e.forward();
+                                    animationControllert2ie.forward();
+                                    animationControllertm2e.forward();
+                                    animationControllertme.forward();
+                                    animationControllerne.forward();
+
+
+                                    animationControllerb3.forward();
+                                    animationControllert3i.forward();
+                                    animationControllern3.forward();
+                                    numbersend(num);
+                                  }else if(conform == false){
+                                    Fluttertoast.showToast(
+                                        msg: "Подтвердите согласие с политикой",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+                                  }else{
+                                    Fluttertoast.showToast(
+                                        msg: "Номер не введён",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                    );
+
+                                  }
                                 }, child: const Text('Продолжить',
                                   style: TextStyle(
                                     color: Color(0xFFF2E8C9),
@@ -727,10 +935,60 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+            ),
           ),
+
+              SlideTransition(
+                position: animationb3,
+                child:
+                Positioned(
+                  left: 35,
+                  top: 424,
+                  child: Container(
+                    width: 300,
+                    height: 50,
+                    child: Stack(
+                      children: [
+
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 300,
+                            height: 50,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child:
+                              Container(
+                                  color: const Color(0xFF1E1E1E),
+                                  height: 60.0,
+                                  child: TextButton(onPressed: () {
+                                    codesend(code);
+                                  }, child: const Text('Продолжить',
+                                    style: TextStyle(
+                                      color: Color(0xFFF2E8C9),
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: "Gilroy",
+                                      fontSize: 24.0,
+                                    ),
+                                  )
+                                  )
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
           SlideTransition(
             position: animationn,
             child:
+            SlideTransition(
+              position: animationne,
+              child:
               Positioned(
                 left: 35,
                 top: 350,
@@ -752,7 +1010,7 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                         ),
                       ),
 
-                      const Positioned(
+                      Positioned(
                         left: 100,
                         top: -2,
                         width: 180.0,
@@ -783,6 +1041,10 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                                 decoration: TextDecoration.none,
                                 height: 0,
                               ),
+                              onChanged: (text){
+                                num = text;
+                                print(text);
+                              },
                             ),
                           ),
                         ),
@@ -807,6 +1069,76 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                 ),
               ),
           ),
+        ),
+
+
+              SlideTransition(
+                position: animationn3,
+                child:
+                Positioned(
+                  left: 35,
+                  top: 350,
+                  child: Container(
+                    width: 300,
+                    height: 50,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 300,
+                            height: 50,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFF1E1E1E),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+                            ),
+                          ),
+                        ),
+
+                        Positioned(
+                          left: 90,
+                          top: -2,
+                          width: 180.0,
+                          child:  Hero(
+                            tag: "search_text_field",
+                            child: Material(
+                              elevation: 0,
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                maxLength: 6,
+                                decoration: InputDecoration(
+                                  hintText: '_ _ _ _ _ _',
+                                  hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 24,
+                                      fontFamily: 'Gilroy',
+                                      fontWeight: FontWeight.w900,
+                                      decoration: TextDecoration.none,
+                                      height: 0),
+                                  filled: true,
+                                  fillColor: const Color(0xFF1E1E1E),
+                                ),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontFamily: 'Gilroy',
+                                  fontWeight: FontWeight.w900,
+                                  decoration: TextDecoration.none,
+                                  height: 0,
+                                ),
+                                onChanged: (text){
+                                  code = text;
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               const Positioned(
                 left: 100,
                 top: 600,
@@ -826,6 +1158,9 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
           SlideTransition(
             position: animationtm,
             child:
+            SlideTransition(
+              position: animationtme,
+              child:
               Positioned(
                 left: 49,
                 top: 494,
@@ -882,9 +1217,13 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                 ),
               ),
           ),
+        ),
           SlideTransition(
             position: animationtm2,
             child:
+            SlideTransition(
+              position: animationtm2e,
+              child:
               const Positioned(
                 left: 87,
                 top: 500,
@@ -905,7 +1244,9 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                 ),
               ),
           ),
+          ),
             ],
+
           ),
         ),
       ],
