@@ -41,6 +41,7 @@ dependencies:
   fluttertoast: ^8.2.2
   flutter_launcher_icons: ^0.13.1
   dio: ^5.3.3
+  easy_localization: ^3.0.3
 
 
 
@@ -70,11 +71,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/img/bonuscard3.png
     - assets/img/bonus.png
+    - assets/translations/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
@@ -110,4 +111,3 @@ flutter:
           weight: 900
         - asset: assets/fonts/Gilroy-Light.ttf
           weight: 300
-

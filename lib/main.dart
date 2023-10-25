@@ -1,15 +1,25 @@
+import 'package:coffeeboss/translations/codegen_loader.g.dart';
+import 'package:coffeeboss/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
-
-
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+        supportedLocales: [Locale('en'), Locale('ru')],
+        path: 'assets/translations', // <-- change the path of the translation files
+        fallbackLocale: Locale('en'),
+        assetLoader: CodegenLoader(),
+        child: const MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -17,7 +27,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       home: BottomNavigationBarExample(),
     );
   }
@@ -643,7 +656,7 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                         animationControllertm2.forward();
                         animationControllertm.forward();
                         animationControllern.forward();
-                      }, child: const Text('Продолжить',
+                      }, child: Text(LocaleKeys.continuei.tr(),
                         style: TextStyle(
                           color: Color(0xFFF2E8C9),
                           fontWeight: FontWeight.w900,
@@ -746,16 +759,16 @@ class _FooState extends State<Iphone1313Pro2> with TickerProviderStateMixin {
                                           Positioned(
                                             left: 29,
                                             top: 8,
-                                            child: Text(
-                                              '🇬🇧 English',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                  fontFamily: 'Gilroy',
-                                                  fontWeight: FontWeight.w900,
-                                                  height: 0,
-                                                  decoration: TextDecoration.none
-                                              ),
+                                            child: TextButton(onPressed: () {
+                                              context.setLocale(Locale('en'));
+                                                }, child: Text('🇬🇧 English',
+                                                  style: TextStyle(
+                                                    color: Color(0xFFF2E8C9),
+                                                    fontWeight: FontWeight.w900,
+                                                    fontFamily: "Gilroy",
+                                                    fontSize: 24.0,
+                                                )
+                                                )
                                             ),
                                           ),
                                         ],
